@@ -1,0 +1,389 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #1e293b;
+    color: #f8fafc;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    background: #0f172a;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+header h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #38bdf8;
+}
+
+/* Sistema de Abas Principais */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #334155;
+    padding-bottom: 10px;
+}
+
+.tab-btn {
+    flex: 1;
+    background: #1e293b;
+    color: #94a3b8;
+    border: 1px solid #334155;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+    background: #334155;
+    color: #fff;
+}
+
+.tab-btn.active {
+    background: #38bdf8;
+    color: #0f172a;
+    border-color: #38bdf8;
+}
+
+/* Sub-abas de filtro */
+.sub-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+    background: #1e293b;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.sub-tab-btn {
+    background: #0f172a;
+    color: #94a3b8;
+    border: 1px solid #334155;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.sub-tab-btn:hover {
+    background: #233349;
+    color: #fff;
+}
+
+.sub-tab-btn.active {
+    background: #10b981;
+    color: white;
+    border-color: #10b981;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Painel de Classificação Geral */
+.leaderboard {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px dashed #334155;
+}
+
+.leaderboard h2 {
+    font-size: 15px;
+    color: #e2e8f0;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.leaderboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.leaderboard-item {
+    font-size: 14px;
+    background: #0f172a;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border-left: 3px solid #eab308;
+}
+
+.leaderboard-item span {
+    font-weight: bold;
+    color: #38bdf8;
+}
+
+.note-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label, .section-title {
+    font-size: 14px;
+    color: #94a3b8;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Fileiras de Entrada dos Jogadores */
+.players-list-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Layout Dinâmico que se adapta caso oculte os pontos */
+.player-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1.2fr;
+    align-items: center;
+    gap: 15px;
+    background: #141e30;
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 1px solid #334155;
+    transition: all 0.3s ease;
+}
+
+/* Classe aplicada via JS quando não for Brasileirão */
+.player-row.no-points {
+    grid-template-columns: 1.5fr 1.5fr;
+}
+
+.player-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #38bdf8;
+}
+
+input[type="number"], select {
+    background: #0f172a;
+    border: 2px solid #334155;
+    color: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+}
+
+input:focus, select:focus {
+    border-color: #38bdf8;
+}
+
+#add-btn {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+#add-btn:hover {
+    background-color: #059669;
+}
+
+#content-history h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #94a3b8;
+}
+
+/* Lista de Partidas Salvas */
+.notes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.note-item {
+    background: #1e293b;
+    border-left: 5px solid #10b981;
+    padding: 15px 20px;
+    border-radius: 6px;
+}
+
+.note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 8px;
+}
+
+.match-badge {
+    background: #38bdf8;
+    color: #0f172a;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Layout Horizontal do Histórico */
+.scores-display-horizontal {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+.score-tag-horizontal {
+    flex: 1;
+    background: #0f172a;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #334155;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 125px;
+    text-align: center;
+}
+
+/* Destaca o Campeão da Copa */
+.score-tag-horizontal.winner-cup {
+    border: 2px solid #eab308;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+}
+
+.score-tag-horizontal .p-name {
+    font-weight: bold;
+    color: #38bdf8;
+    margin-bottom: 4px;
+}
+
+.score-tag-horizontal .p-pts {
+    color: #10b981;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.score-tag-horizontal .p-rank {
+    color: #eab308;
+    font-weight: bold;
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+.delete-btn {
+    background: transparent;
+    color: #ef4444;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.delete-btn:hover {
+    color: #f87171;
+}
+
+@media (max-width: 550px) {
+    .player-row, .player-row.no-points {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    .leaderboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* Cabeçalho de temporada no histórico */
+.season-header {
+    font-size: 15px;
+    color: #38bdf8;
+    margin: 18px 0 8px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px dashed #334155;
+    letter-spacing: 0.5px;
+}
+
+/* Data no cabeçalho do registro */
+.note-date {
+    font-size: 12px;
+    color: #64748b;
+    margin-left: auto;
+    margin-right: 12px;
+}
+
+/* Filtro de temporada no histórico */
+.season-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    background: #1e293b;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+}
+
+.season-filter label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.season-filter select {
+    background: #0f172a;
+    border: 2px solid #334155;
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    flex: 1;
+    max-width: 220px;
+}
+
+.season-filter select:focus {
+    border-color: #38bdf8;
+}

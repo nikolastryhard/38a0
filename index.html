@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placar de Jogadores - Copas e Pontos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+```
+<header>
+    <h1>⚽ Bloco de Notas: Futebol</h1>
+</header>
+
+<main>
+
+    <div class="tabs">
+        <button id="tab-form" class="tab-btn active" onclick="switchTab('form')">
+            Nova Rodada
+        </button>
+
+        <button id="tab-history" class="tab-btn" onclick="switchTab('history')">
+            Histórico de Campeonato
+        </button>
+
+        <button id="tab-titles" class="tab-btn" onclick="switchTab('titles')">
+            🏆 Galeria de Títulos
+        </button>
+    </div>
+
+    <!-- NOVA RODADA -->
+    <div id="content-form" class="tab-content active">
+
+        <div class="leaderboard">
+            <h2>🏆 Quadro Geral de Conquistas (Total)</h2>
+
+            <div class="leaderboard-grid">
+
+                <div class="leaderboard-item">
+                    Nikolas:
+                    <span id="total-nikolas">0 pts</span>
+                    | Títulos:
+                    <span id="titles-nikolas">0</span>
+                </div>
+
+                <div class="leaderboard-item">
+                    Fabricio:
+                    <span id="total-fabricio">0 pts</span>
+                    | Títulos:
+                    <span id="titles-fabricio">0</span>
+                </div>
+
+                <div class="leaderboard-item">
+                    Marcel:
+                    <span id="total-marcel">0 pts</span>
+                    | Títulos:
+                    <span id="titles-marcel">0</span>
+                </div>
+
+                <div class="leaderboard-item">
+                    Joao:
+                    <span id="total-joao">0 pts</span>
+                    | Títulos:
+                    <span id="titles-joao">0</span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="note-form">
+
+            <!-- CAMPEONATO -->
+            <div class="form-group">
+                <label for="tournament-select">Campeonato:</label>
+
+                <select id="tournament-select" onchange="handleTournamentChange()">
+                    <option value="Brasileirão">Brasileirão</option>
+                    <option value="Libertadores">Libertadores</option>
+                    <option value="Sul-Americana">Sul-Americana</option>
+                    <option value="Copa do Brasil">Copa do Brasil</option>
+                    <option value="Mundial de Clubes">Mundial de Clubes</option>
+                    <option value="Supermundial">Supermundial</option>
+                    <option value="Outro">Outro / Amistoso</option>
+                </select>
+            </div>
+
+            <!-- TEMPORADA -->
+            <div class="form-group">
+                <label for="season-input">Temporada:</label>
+
+                <input
+                    type="number"
+                    id="season-input"
+                    placeholder="Ex: 2026"
+                    min="1900"
+                    max="2100"
+                >
+            </div>
+
+            <div class="section-title" id="form-section-title">
+                Resultados por Jogador (Brasileirão)
+            </div>
+
+            <div class="players-list-row">
+
+                <div class="player-row" id="row-nikolas">
+                    <div class="player-name">Nikolas</div>
+                    <input type="number" id="pts-nikolas" placeholder="Pontos" min="0">
+                    <select id="rank-nikolas" class="dynamic-select"></select>
+                </div>
+
+                <div class="player-row" id="row-fabricio">
+                    <div class="player-name">Fabricio</div>
+                    <input type="number" id="pts-fabricio" placeholder="Pontos" min="0">
+                    <select id="rank-fabricio" class="dynamic-select"></select>
+                </div>
+
+                <div class="player-row" id="row-marcel">
+                    <div class="player-name">Marcel</div>
+                    <input type="number" id="pts-marcel" placeholder="Pontos" min="0">
+                    <select id="rank-marcel" class="dynamic-select"></select>
+                </div>
+
+                <div class="player-row" id="row-joao">
+                    <div class="player-name">Joao</div>
+                    <input type="number" id="pts-joao" placeholder="Pontos" min="0">
+                    <select id="rank-joao" class="dynamic-select"></select>
+                </div>
+
+            </div>
+
+            <button id="add-btn">Salvar Rodada</button>
+
+        </div>
+    </div>
+
+    <!-- HISTÓRICO -->
+    <div id="content-history" class="tab-content">
+
+        <div class="sub-tabs" id="tournament-filters">
+
+            <button class="sub-tab-btn active"
+                onclick="filterByTournament('Brasileirão')">
+                Brasileirão
+            </button>
+
+            <button class="sub-tab-btn"
+                onclick="filterByTournament('Libertadores')">
+                Libertadores
+            </button>
+
+            <button class="sub-tab-btn"
+                onclick="filterByTournament('Sul-Americana')">
+                Sul-Americana
+            </button>
+
+            <button class="sub-tab-btn"
+                onclick="filterByTournament('Copa do Brasil')">
+                Copa do Brasil
+            </button>
+
+            <button class="sub-tab-btn"
+                onclick="filterByTournament('Mundial de Clubes')">
+                Mundial de Clubes
+            </button>
+
+            <button class="sub-tab-btn"
+                onclick="filterByTournament('Supermundial')">
+                Supermundial
+            </button>
+
+            <button class="sub-tab-btn"
+                onclick="filterByTournament('Outro')">
+                Outros
+            </button>
+
+        </div>
+
+        <!-- SELETOR DE TEMPORADA -->
+        <div class="season-filter">
+
+            <label for="history-season">
+                📅 Temporada:
+            </label>
+
+            <select id="history-season" onchange="filterBySeason()">
+                <option value="all">Todas as temporadas</option>
+            </select>
+
+        </div>
+
+        <h2 id="current-history-title">
+            Histórico: Brasileirão
+        </h2>
+
+        <div id="notes-container" class="notes-list"></div>
+
+    </div>
+
+    <!-- GALERIA DE TÍTULOS -->
+    <div id="content-titles" class="tab-content">
+
+        <h2 class="titles-page-title">
+            🏆 Registro Histórico de Campeões
+        </h2>
+
+        <div id="titles-gallery-container" class="notes-list"></div>
+
+    </div>
+
+</main>
+```
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
