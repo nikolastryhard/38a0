@@ -136,7 +136,6 @@ function refreshSeasonOptions() {
 
     const history = getHistoryFromStorage();
 
-    // Pega temporadas únicas do campeonato selecionado
     const seasons = [
         ...new Set(
             history
@@ -144,9 +143,8 @@ function refreshSeasonOptions() {
                 .map(r => r.season)
                 .filter(Boolean)
         )
-    ].sort((a, b) => Number(b) - Number(a)); // mais recentes primeiro
+    ].sort((a, b) => Number(b) - Number(a));
 
-    // Mantém a seleção atual se ainda existir
     const current = historySeasonSelect.value;
     historySeasonSelect.innerHTML = '<option value="all">Todas as temporadas</option>';
 
@@ -157,7 +155,6 @@ function refreshSeasonOptions() {
         historySeasonSelect.appendChild(opt);
     });
 
-    // Restaura ou reseta
     if (seasons.includes(current)) {
         historySeasonSelect.value = current;
         selectedSeasonFilter = current;
@@ -183,12 +180,6 @@ addBtn.addEventListener('click', () => {
         return;
     }
 
-    // Pede confirmação se já existir rodada igual (mesmo campeonato+temporada)
-    const history = getHistoryFromStorage();
-    const sameRound = history.filter(
-        r => r.tournament === tournament && r.season === season
-    );
-
     const currentRound = {
         tournament: tournament,
         season: season,
@@ -210,13 +201,11 @@ addBtn.addEventListener('click', () => {
 
     saveRoundToStorage(currentRound);
 
-    // Ajusta filtros para exibir exatamente o que foi cadastrado
     selectedTournamentFilter = tournament;
     selectedSeasonFilter = season;
 
     filterByTournament(tournament);
 
-    // Força o select de temporada para a temporada cadastrada
     refreshSeasonOptions();
     if ([...historySeasonSelect.options].some(o => o.value === season)) {
         historySeasonSelect.value = season;
@@ -341,7 +330,6 @@ function renderNotes() {
         bySeason[season].push(round);
     });
 
-    // Ordena temporadas (mais recente primeiro)
     const seasons = Object.keys(bySeason).sort((a, b) => {
         if (a === 'Sem temporada') return 1;
         if (b === 'Sem temporada') return -1;
@@ -349,7 +337,6 @@ function renderNotes() {
     });
 
     seasons.forEach(season => {
-        // Cabeçalho da temporada (só mostra quando não está filtrando por uma)
         if (selectedSeasonFilter === 'all') {
             const seasonHeader = document.createElement('h3');
             seasonHeader.className = 'season-header';
@@ -357,7 +344,6 @@ function renderNotes() {
             notesContainer.appendChild(seasonHeader);
         }
 
-        // Rodadas da temporada (mais recente primeiro)
         bySeason[season]
             .slice()
             .reverse()
@@ -458,20 +444,31 @@ function renderTitlesGallery() {
                 </p>
             `;
         } else {
-            // Agrupa por torneio+temporada
-            const counts = {};
+            // Agrupa por torneio
+            const grouped = {};
             trophies.forEach(t => {
-                const key = `${t.tournament}|${t.season}`;
-                counts[key] = (counts[key] || 0) + 1;
+                if (!grouped[t.tournament]) {
+                    grouped[t.tournament] = { count: 0, seasons: [] };
+                }
+                grouped[t.tournament].count++;
+                grouped[t.tournament].seasons.push(t.season);
             });
 
             let trophiesListHtml = '';
-            Object.entries(counts).forEach(([key, count]) => {
-                const [tournament, season] = key.split('|');
+            Object.entries(grouped).forEach(([tournament, data]) => {
+                const seasonsLabel = data.seasons
+                    .slice()
+                    .sort()
+                    .map(s => `(${s})`)
+                    .join(' ');
+
                 trophiesListHtml += `
-                    <div style="margin-top:8px; color:#e2e8f0;">
-                        🏆 ${tournament} <span style="color:#94a3b8;">(${season})</span>
-                        <strong> ${count} ${count === 1 ? 'título' : 'títulos'}</strong>
+                    <div class="trophy-line">
+                        <span class="trophy-name">🏆 ${tournament}</span>
+                        <span class="trophy-count">
+                            ${data.count} ${data.count === 1 ? 'título' : 'títulos'}
+                        </span>
+                        <span class="trophy-dates">${seasonsLabel}</span>
                     </div>
                 `;
             });
@@ -480,7 +477,7 @@ function renderTitlesGallery() {
                 <div class="p-name" style="font-size:18px; color:#f8fafc;">
                     🏆 ${capitalizedName}
                 </div>
-                <div style="margin-top:10px; color:#cbd5e1;">
+                <div class="trophy-list">
                     ${trophiesListHtml}
                 </div>
                 <div style="margin-top:12px; font-weight:bold; color:#facc15;">
@@ -517,8 +514,4 @@ function clearForm() {
         if (ptsInput) ptsInput.value = '';
         if (rankSelect) rankSelect.value = '';
     });
-
-    // Mantém a temporada preenchida para facilitar o próximo cadastro
-    // (se quiser limpar também, descomente a linha abaixo)
-    // seasonInput.value = '';
 }
